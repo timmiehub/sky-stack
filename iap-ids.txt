@@ -1,0 +1,13 @@
+Sky Stack — In-App Product IDs for Yandex Games Console
+Create these consumable / non-consumable products to match the game:
+
+coins_small   — consumable — +200 coins
+coins_medium  — consumable — +600 coins
+coins_large   — consumable — +1500 coins
+skin_pack     — consumable — unlocks Aurora + Plasma skins
+no_ads        — non-consumable — disables interstitial ads only
+
+Rewarded ads (no console product):
+- Continue (+1 life) after Game Over
+- Double coins after Game Over
+- Unlock Neon / Candy skins in Shop

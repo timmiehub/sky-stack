@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Sky Stack</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="/sdk.js"></script>
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas"></canvas>
+
+    <div id="ui-root">
+      <!-- Boot -->
+      <div id="screen-boot" class="screen">
+        <div class="boot-brand">SKY STACK</div>
+        <div class="boot-bar"><div id="boot-fill"></div></div>
+      </div>
+
+      <!-- Main menu -->
+      <div id="screen-menu" class="screen hidden">
+        <div class="menu-top">
+          <button type="button" id="btn-mute" class="icon-btn" aria-label="Mute"></button>
+          <div class="coins-badge" id="menu-coins"><span class="coin-dot"></span><span id="menu-coins-val">0</span></div>
+        </div>
+        <div class="menu-hero">
+          <p class="brand-sub">HYPERCASUAL</p>
+          <h1 class="brand">SKY STACK</h1>
+          <p class="tagline" data-i18n="tagline">Build higher. Never miss.</p>
+          <div class="best-row">
+            <span data-i18n="best">Best</span>: <strong id="menu-best">0</strong>
+          </div>
+        </div>
+        <div class="menu-actions">
+          <button type="button" id="btn-play" class="btn btn-primary" data-i18n="play">Play</button>
+          <button type="button" id="btn-shop" class="btn btn-secondary" data-i18n="shop">Shop</button>
+          <button type="button" id="btn-how" class="btn btn-ghost" data-i18n="howToPlay">How to play</button>
+        </div>
+        <div class="daily-card" id="daily-card">
+          <div class="daily-title" data-i18n="dailyChallenge">Daily Challenge</div>
+          <div class="daily-desc" id="daily-desc"></div>
+          <div class="daily-progress"><div id="daily-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- HUD -->
+      <div id="screen-hud" class="screen overlay hidden">
+        <div class="hud-top">
+          <div class="hud-score" id="hud-score">0</div>
+          <div class="hud-combo hidden" id="hud-combo">x2</div>
+        </div>
+        <div class="hud-hint" id="hud-hint" data-i18n="tapToDrop">Tap to drop</div>
+      </div>
+
+      <!-- Game Over -->
+      <div id="screen-over" class="screen hidden">
+        <div class="panel panel-over">
+          <h2 data-i18n="gameOver">Game Over</h2>
+          <div class="over-score"><span data-i18n="score">Score</span>: <strong id="over-score">0</strong></div>
+          <div class="over-best"><span data-i18n="best">Best</span>: <strong id="over-best">0</strong></div>
+          <div class="over-coins"><span data-i18n="earned">Earned</span>: <strong id="over-coins">+0</strong></div>
+          <div class="over-actions">
+            <button type="button" id="btn-continue" class="btn btn-reward hidden">
+              <span class="tv-slot" aria-hidden="true"></span>
+              <span data-i18n="continueWatch">Continue (+1 life)</span>
+            </button>
+            <button type="button" id="btn-double" class="btn btn-reward">
+              <span class="tv-slot" aria-hidden="true"></span>
+              <span data-i18n="doubleCoins">Double coins</span>
+            </button>
+            <button type="button" id="btn-retry" class="btn btn-primary" data-i18n="retry">Retry</button>
+            <button type="button" id="btn-menu" class="btn btn-ghost" data-i18n="menu">Menu</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shop -->
+      <div id="screen-shop" class="screen hidden">
+        <div class="shop-header">
+          <button type="button" id="btn-shop-back" class="icon-btn">←</button>
+          <h2 data-i18n="shop">Shop</h2>
+          <div class="coins-badge" id="shop-coins"><span class="coin-dot"></span><span id="shop-coins-val">0</span></div>
+        </div>
+        <div class="shop-tabs">
+          <button type="button" class="tab active" data-tab="skins" data-i18n="skins">Skins</button>
+          <button type="button" class="tab" data-tab="coins" data-i18n="coins">Coins</button>
+          <button type="button" class="tab" data-tab="special" data-i18n="special">Special</button>
+        </div>
+        <div id="shop-content" class="shop-content"></div>
+      </div>
+
+      <!-- How to play -->
+      <div id="screen-how" class="screen hidden">
+        <div class="panel">
+          <h2 data-i18n="howToPlay">How to play</h2>
+          <ol class="how-list" id="how-list"></ol>
+          <button type="button" id="btn-how-close" class="btn btn-primary" data-i18n="gotIt">Got it</button>
+        </div>
+      </div>
+
+      <!-- Blocks all input while fullscreen / rewarded ad is open -->
+      <div id="ad-block" class="ad-block hidden" aria-hidden="true">
+        <div class="ad-block-inner">
+          <span class="tv-slot tv-slot-lg" aria-hidden="true"></span>
+          <p data-i18n="adPlaying">Ad playing…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
