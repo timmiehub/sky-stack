@@ -1,6 +1,6 @@
-import { t, applyDomI18n } from './i18n.js';
+import { t, applyDomI18n, getLang } from './i18n.js';
 import * as storage from './storage.js';
-import { SKINS } from './skins.js';
+import { SKINS, skinDisplayName } from './skins.js';
 import * as audio from './audio.js';
 import * as ya from './yandex.js';
 import { TV_ICON_SVG } from './icons.js';
@@ -208,44 +208,53 @@ export function renderShop() {
       const equipped = d.equippedSkin === skin.id;
       const item = document.createElement('div');
       item.className = `shop-item${owned ? ' owned' : ''}${equipped ? ' equipped' : ''}`;
-      const preview = document.createElement('div');
-      preview.className = 'skin-preview';
-      preview.style.background = `linear-gradient(90deg, ${skin.colors.join(',')})`;
+
       const name = document.createElement('div');
       name.className = 'shop-item-name';
-      name.textContent = skin.name;
-      const price = document.createElement('div');
-      price.className = 'shop-item-price';
+      name.textContent = skinDisplayName(skin, getLang());
+
+      const meta = document.createElement('div');
+      meta.className = 'shop-item-meta';
+
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'btn btn-primary';
+      btn.className = 'btn btn-primary shop-btn';
 
       if (equipped) {
-        price.textContent = t('equipped');
+        meta.textContent = '';
+        btn.className = 'btn btn-equipped shop-btn';
         btn.textContent = t('equipped');
         btn.disabled = true;
       } else if (owned) {
-        price.textContent = '';
+        meta.textContent = '';
         btn.textContent = t('equip');
-        btn.onclick = () => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
           audio.playClick();
           storage.equipSkin(skin.id);
           handlers.onEquipSkin?.(skin.id);
           renderShop();
-        };
+        });
       } else if (skin.unlock === 'rv') {
-        price.textContent = t('watchAd');
-        btn.className = 'btn btn-reward';
+        meta.innerHTML = `<span class="price-coins">${t('watchAd')}</span>`;
+        btn.className = 'btn btn-reward shop-btn';
         btn.appendChild(makeRewardBtnContent(t('watchAd')));
-        btn.onclick = () => handlers.onUnlockSkinRv?.(skin.id);
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          handlers.onUnlockSkinRv?.(skin.id);
+        });
       } else if (skin.unlock === 'pack') {
-        price.textContent = t('skinPack');
+        meta.innerHTML = `<span class="price-coins">${t('skinPack')}</span>`;
         btn.textContent = t('buy');
-        btn.onclick = () => handlers.onBuyProduct?.(ya.PRODUCT_IDS.skin_pack);
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          handlers.onBuyProduct?.(ya.PRODUCT_IDS.skin_pack);
+        });
       } else {
-        price.textContent = `${skin.price}`;
+        meta.innerHTML = `<span class="price-coins">${skin.price}</span>`;
         btn.textContent = t('buy');
-        btn.onclick = () => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
           if (storage.spendCoins(skin.price)) {
             audio.playUnlock();
             storage.unlockSkin(skin.id);
@@ -256,10 +265,10 @@ export function renderShop() {
           } else {
             showToast(t('notEnough'));
           }
-        };
+        });
       }
 
-      item.append(preview, name, price, btn);
+      item.append(name, meta, btn);
       root.appendChild(item);
     });
   } else if (shopTab === 'coins') {

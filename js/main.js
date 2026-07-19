@@ -252,6 +252,9 @@ async function boot() {
 
   ui.setBootProgress(0.55);
 
+  await game.initAssets();
+  ui.setBootProgress(0.7);
+
   const catalog = await ya.fetchCatalog();
   ui.setCatalog(catalog);
 

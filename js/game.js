@@ -1,5 +1,5 @@
 import { ParticleSystem } from './particles.js';
-import { getSkin, skinGradient } from './skins.js';
+import { getSkin, drawSkin, preloadSkins } from './skins.js';
 import * as audio from './audio.js';
 
 const PERFECT_TOLERANCE = 4;
@@ -60,6 +60,10 @@ export class StackGame {
 
   setRightInset(px) {
     this.rightInset = Math.max(0, Number(px) || 0);
+  }
+
+  async initAssets() {
+    await preloadSkins();
   }
 
   resize() {
@@ -410,16 +414,10 @@ export class StackGame {
     ctx.fillStyle = 'rgba(0,0,0,0.28)';
     ctx.fillRect(b.x + 3, b.y + 5, b.w, b.h);
 
-    ctx.fillStyle = skinGradient(ctx, skin, b.x, b.y, b.w, b.h);
-    roundRect(ctx, b.x, b.y, b.w, b.h, 6);
-    ctx.fill();
-
-    ctx.fillStyle = 'rgba(255,255,255,0.22)';
-    roundRect(ctx, b.x + 2, b.y + 2, b.w - 4, Math.max(4, b.h * 0.28), 4);
-    ctx.fill();
+    drawSkin(ctx, skin, b.x, b.y, b.w, b.h, performance.now());
 
     if (b.perfect && highlight) {
-      ctx.strokeStyle = 'rgba(255,209,102,0.85)';
+      ctx.strokeStyle = 'rgba(255,209,102,0.9)';
       ctx.lineWidth = 2;
       roundRect(ctx, b.x + 1, b.y + 1, b.w - 2, b.h - 2, 5);
       ctx.stroke();
@@ -442,7 +440,7 @@ export class StackGame {
 
     const baseW = Math.min(Math.min(this.w - this.rightInset, this.w) * 0.5, 200);
     const y = this.h * 0.84;
-    const palette = ['coral', 'cyan', 'gold', 'magma', 'ocean'];
+    const palette = ['coral', 'tiger', 'lava', 'galaxy', 'holo', 'dragon'];
     for (let i = 0; i < 6; i++) {
       const shrink = i * 6;
       const bw = baseW - shrink;
